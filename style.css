@@ -1,0 +1,546 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+}
+
+/* login & register card styling */
+#auth {
+  width: 100%;
+  height: 100%;
+  background-color: #f4f7f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card,
+.register-card {
+  width: 24%;
+  height: 40%;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 0.9rem;
+  box-shadow: 0 0 5px 1px rgb(220, 213, 213);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+#auth form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 90%;
+}
+
+#auth form .username-input,
+.password-input {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+#auth form .username-input input {
+  padding: 0.6rem;
+  border-radius: 0.4rem;
+  border: 1px solid #cccccc;
+}
+
+#auth .password-input input {
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  border: 1px solid #cccccc;
+}
+
+#auth form > button {
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: #0156b3;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#auth p:nth-child(4) {
+  font-size: 0.85rem;
+}
+
+#auth p:nth-child(4) a {
+  text-decoration: none;
+  color: #0156b3;
+}
+
+#auth .register-card form > button {
+  background-color: #28a744;
+}
+
+main {
+  min-height: 100vh;
+  width: 100vw;
+  background-color: #f8f9fb;
+}
+
+main .dashboard {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #f8f9fb;
+  display: grid;
+  grid-template-columns: 270px 330px 330px 166px 165px 330px;
+  grid-template-rows: 80px 70px 160px 200px 150px;
+  grid-template-areas:
+    "side-navbar header header header header header header"
+    "side-navbar overview ... ... ... ... ..."
+    "side-navbar current-balance total-income total-expense total-expense total-transaction ..."
+    "side-navbar cash-flow-analysis cash-flow-analysis cash-flow-analysis preferences preferences ..."
+    "side-navbar cash-flow-analysis cash-flow-analysis cash-flow-analysis ... ... ..."
+    "side-navbar all-transactions all-transactions all-transactions ... ... ...";
+  gap: 1rem;
+}
+
+.dashboard > div {
+  border-radius: 0.8rem;
+}
+
+/* side navbar styling */
+.dashboard .side-navbar {
+  border: 1px solid #e5e7eb;
+  grid-area: side-navbar;
+  padding: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  background-color: white;
+  margin-right: 1rem;
+}
+
+.side-navbar .logo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.side-navbar .logo i {
+  font-size: 1.5rem;
+}
+
+.side-navbar .logo .logo-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.2;
+}
+
+.side-navbar .logo .logo-details h2 {
+  font-size: 1.2rem;
+}
+
+.side-navbar .logo .logo-details p {
+  font-size: 0.75rem;
+  color: #6c7280;
+}
+
+.side-navbar .menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.side-navbar .menu button {
+  padding: 0.9rem;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.1rem;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.side-navbar .menu button:nth-child(1) {
+  color: #1f40af;
+  background-color: #dbeafe;
+}
+
+.dashboard .side-navbar .menu .dashboard-color-inactive {
+  color: #9ba0aa;
+  background-color: transparent;
+}
+
+.dashboard .side-navbar .menu .dashboard-color-inactive:hover {
+  background-color: #dbeafe;
+  color: #1f40af;
+}
+
+.side-navbar .menu button:nth-child(2) {
+  color: #9ba0aa;
+  background-color: transparent;
+}
+
+.side-navbar .menu button:nth-child(2):hover {
+  background-color: #dbeafe;
+  color: #1f40af;
+}
+
+.dashboard .side-navbar .menu .dashboard-setting-color-active {
+  background-color: #dbe9fe;
+  color: #1d40af;
+}
+
+.side-navbar > button {
+  margin-top: auto;
+  padding: 0.9rem;
+  border-radius: 0.5rem;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* header styling */
+.dashboard .header {
+  border: 1px solid #e5e7eb;
+  grid-area: header;
+  background-color: white;
+  margin-left: -2.1rem;
+  padding: 1.3rem;
+  padding-right: 2rem;
+}
+
+.header .user-info {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.header .user-info h3 {
+  font-size: 1rem;
+  padding-left: 1rem;
+  border-left: 1px solid #e5e7eb;
+}
+
+.header .user-info button {
+  padding: 0.5rem 1.3rem;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid #cccccc;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+/* overview-heading styling */
+.dashboard .overview {
+  grid-area: overview;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.overview h1 {
+  font-size: 1.9rem;
+}
+
+.overview p {
+  font-size: 0.9rem;
+  color: #6c7280;
+}
+
+/* current-balance-container styling */
+.dashboard .current-balance,
+.total-income,
+.total-expense,
+.total-transaction {
+  grid-area: current-balance;
+  border: 1px solid #e5e7eb;
+  background-color: white;
+  padding: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.icon {
+  background-color: #dbeafe;
+  width: fit-content;
+  padding: 0.7rem 0.8rem;
+  border-radius: 0.5rem;
+}
+
+.current-balance .icon i {
+  color: #1f40af;
+}
+
+.container-detail {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  gap: 0.5rem;
+}
+
+.container-detail p {
+  color: #6c7280;
+  font-size: 0.9rem;
+}
+
+/* total-income-container styling */
+.dashboard .total-income {
+  grid-area: total-income;
+}
+
+.total-income .icon {
+  background-color: #dcfce7;
+}
+
+.total-income .icon i {
+  color: #156534;
+}
+
+.total-income .container-detail h2 {
+  color: #156534;
+}
+
+/* total-expense-container styling */
+.dashboard .total-expense {
+  grid-area: total-expense;
+}
+
+.total-expense .icon {
+  background-color: #ffe2e2;
+}
+
+.total-expense .icon i {
+  color: #991b1b;
+}
+
+.total-expense .container-detail h2 {
+  color: #991b1b;
+}
+
+/* total-transaction-container styling */
+.dashboard .total-transaction {
+  grid-area: total-transaction;
+}
+
+.total-transaction .icon {
+  background-color: #dbeafe;
+}
+
+.total-transaction .icon i {
+  color: #1f40af;
+}
+
+/* cash-flow-analysis container styling */
+.dashboard .cash-flow-analysis {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  padding: 1.3rem;
+  grid-area: cash-flow-analysis;
+  display: flex;
+  flex-direction: column;
+}
+
+/* preferences-container styling */
+.dashboard .preferences {
+  grid-area: preferences;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  padding: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.preferences .preferences-button {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.9rem 0rem;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 1rem;
+}
+
+.preferences > button {
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #fff5f5;
+  color: #981b1b;
+  border: 1px solid #ffcccc;
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+/* ---slider styling--- */
+.theme-toggle {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.theme-toggle input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background: #ccc;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.slider {
+  transition: background-color 0.3s ease;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+}
+
+.slider::before {
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle input:checked + .slider {
+  background: #3b82f6;
+}
+
+.theme-toggle input:checked + .slider::before {
+  transform: translateX(24px);
+}
+
+/* all-transactions-container */
+.dashboard .all-transactions {
+  background-color: white;
+  grid-area: all-transactions;
+  border-radius: 0.8rem;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  height: fit-content;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+}
+
+.all-transactions .search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.all-transactions .search .search-input {
+  background-color: #f8f9fb;
+  padding: 0.5rem;
+  width: 30%;
+  border-radius: 0.5rem;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.all-transactions .search .search-input input {
+  border: none;
+  background-color: #f8f9fb;
+}
+
+.all-transactions .search .search-input input:focus {
+  outline: none;
+}
+
+.all-transactions .search .select-type {
+  width: 70%;
+}
+
+.all-transactions .search .select-type select {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  background-color: #f8f9fb;
+}
+
+.all-transactions .search .select-type select:focus {
+  outline: none;
+}
+
+.all-transactions .finance-details {
+  display: flex;
+  gap: 6rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.all-transactions .finance-details .date {
+  margin-left: 0.5rem;
+}
+
+.all-transactions .finance-details h4 {
+  font-size: 0.79rem;
+  color: #6c7280;
+  text-transform: uppercase;
+}
+
+.hide {
+  display: none !important;
+}

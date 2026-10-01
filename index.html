@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - FinTrack Pro</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- login & register -->
+    <section id="auth">
+      <div class="login-card">
+        <h2>Welcome Back</h2>
+        <p>Login to FinTrack Pro</p>
+        <form>
+          <div class="username-input">
+            <label for="login-username">Username</label>
+            <input type="text" id="login-username" required />
+          </div>
+          <div class="password-input">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" required />
+          </div>
+          <button type="submit">Login</button>
+        </form>
+        <p>
+          Don't have an account?
+          <a href="#" id="register-link">Register here</a>
+        </p>
+      </div>
+
+      <div class="register-card hide">
+        <h2>Create Account</h2>
+        <p>Join FinTrack Pro</p>
+        <form>
+          <div class="username-input">
+            <label for="username-select">Choose a Username</label>
+            <input type="text" id="username-select" required />
+          </div>
+          <div class="password-input">
+            <label for="password-select">Password</label>
+            <input type="password" id="password-select" required />
+          </div>
+          <button type="submit">Register</button>
+        </form>
+        <p>
+          Already have an account? <a href="#" id="login-link">Login here</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- main dashboard -->
+    <main>
+      <section class="dashboard">
+        
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
