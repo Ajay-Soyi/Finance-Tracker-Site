@@ -8,9 +8,9 @@ const loginCard = document.querySelector(".login-card");
 const registerCard = document.querySelector(".register-card");
 const registerLink = document.querySelector("#register-link");
 const loginLink = document.querySelector("#login-link");
-// const ctx = document.getElementById("cash-flow-chart"); // chart canvas
 const dashboard = document.querySelector(".dashboard");
 const auth = document.getElementById("auth");
+const transactionBox = document.querySelector(".transaction-box");
 
 const calculateTransactions = (transactionsArr) => {
   let currentBalance = 0;
@@ -34,7 +34,155 @@ const calculateTransactions = (transactionsArr) => {
   };
 };
 
-const generateChartUI = (ctx) => {};
+const generateChartUI = (ctx, transactionObj) => {
+  const labels = ["Income vs Expenses"];
+
+  const income = transactionObj.totalIncome;
+  const expense = transactionObj.totalExpense;
+
+  new Chart(ctx, {
+    type: "bar",
+
+    data: {
+      labels: labels,
+
+      datasets: [
+        {
+          label: "Income",
+          data: income,
+          borderRadius: 5,
+          backgroundColor: "green",
+        },
+        {
+          label: "Expense",
+          data: expense,
+          borderRadius: 5,
+          backgroundColor: "#991b1b",
+        },
+      ],
+    },
+
+    options: {
+      responsive: true,
+
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+      plugins: {
+        legend: {
+          position: "top",
+          labels: {
+            color: "black",
+            boxWidth: 35,
+            boxHeight: 12,
+          },
+        },
+      },
+    },
+  });
+};
+
+const renderFinanceDetail = (
+  transactionArr,
+  financialDate,
+  financialDesc,
+  financialCategory,
+  financialAmt,
+  financialActions,
+) => {
+  if (transactionArr.length === 0) return;
+  // date
+  const len = transactionArr.length;
+  const datePara = document.createElement("p");
+  datePara.textContent = transactionArr[len - 1].date;
+  financialDate.appendChild(datePara);
+
+  // description
+  const descPara = document.createElement("p");
+  descPara.textContent = transactionArr[len - 1].description;
+  financialDesc.appendChild(descPara);
+
+  // category
+  const categoryPara = document.createElement("p");
+  categoryPara.textContent = transactionArr[len - 1].category;
+  financialCategory.appendChild(categoryPara);
+
+  // amount
+  const amtPara = document.createElement("p");
+  amtPara.textContent = transactionArr[len - 1].amount;
+  financialAmt.appendChild(amtPara);
+
+  // actions
+  const actionDiv = document.createElement("div");
+  act.classList.add(".action-btns");
+  actionDiv.innerHTML = `
+      <button ><i class="fa-solid fa-pen"></i></button>
+      <button><i class="fa-solid fa-trash"></i></button>
+  `;
+  financialActions.appendChild(actionDiv);
+};
+
+transactionBox.addEventListener("click", (e) => {
+  const form = transactionBox.querySelector(".transaction-box>div");
+
+  if (form && !form.contains(e.target)) {
+    closeTransactionBox();
+  }
+});
+
+const closeTransactionBox = () => {
+  transactionBox.innerHTML = "";
+  transactionBox.classList.remove("transaction-box-style");
+};
+
+const renderTransactionUI = () => {
+  transactionBox.innerHTML = `
+        <div class="transaction-form">
+          <div class="header">
+            <h3>Add Transaction</h3>
+            <p onclick="closeTransactionBox()">x</p>
+          </div>
+          <form>
+            <label for="type">Type</label>
+            <select name="types" id="type">
+              <option value="Income">Income</option>
+              <option value="Expense" selected>Expense</option>
+            </select>
+            <label for="description">Description</label>
+            <input type="text" placeholder="e.g. Amazon, Salary, Coffee" />
+            <div class="amt-date">
+              <div class="amt">
+                <label for="amount">Amount</label>
+                <input type="number" />
+              </div>
+              <div class="date">
+                <label for="date">Date</label>
+                <input type="date" name="date" id="date" />
+              </div>
+            </div>
+            <label for="category">Category</label>
+            <select name="category" id="category">
+              <option value="select a category" selected disabled>
+                Select a category
+              </option>
+              <option value="food & dining">Food and Dining</option>
+              <option value="shopping">Shopping</option>
+              <option value="recharge and bills">Recharge & Bills</option>
+              <option value="petrol and auto">Petrol & Auto</option>
+              <option value="utilities">Utilities</option>
+              <option value="salary">Salary</option>
+              <option value="entertainment">Entertainment</option>
+              <option value="other">Other</option>
+            </select>
+            <button type="submit">Save Transaction</button>
+          </form>
+        </div>
+  
+  `;
+  transactionBox.classList.add("transaction-box-style");
+};
 
 const renderDashboard = (transactionsArr, user) => {
   const transactionOBj = calculateTransactions(transactionsArr);
@@ -57,7 +205,7 @@ const renderDashboard = (transactionsArr, user) => {
               <i class="fa-solid fa-gear"></i> Settings
             </button>
           </div>
-          <button id="add-transaction">
+          <button id="add-transaction" onclick="renderTransactionUI()">
             <i class="fa-solid fa-plus"></i> Add Transaction
           </button>
         </nav>
@@ -154,7 +302,6 @@ const renderDashboard = (transactionsArr, user) => {
             </div>
             <div class="description">
               <h4>Description</h4>
-              <p></p>
             </div>
             <div class="category">
               <h4>Category</h4>
@@ -164,8 +311,6 @@ const renderDashboard = (transactionsArr, user) => {
             </div>
             <div class="actions">
               <h4>Actions</h4>
-              <button><i class="fa-solid fa-pen"></i></button>
-              <button><i class="fa-solid fa-trash"></i></button>
             </div>
           </div>
         </div>
@@ -197,8 +342,25 @@ const renderDashboard = (transactionsArr, user) => {
           </div>
         </div>
   `;
+
+  // additional renders
   const ctx = document.getElementById("cash-flow-chart");
-  generateChartUI(ctx);
+  const financialDate = document.querySelector(".finance-details .date");
+  const financialDesc = document.querySelector(".finance-details .description");
+  const financialCategory = document.querySelector(
+    ".finance-details .category",
+  );
+  const financialAmt = document.querySelector(".finance-details .amount");
+  const financialActions = document.querySelector(".finance-details .actions");
+  generateChartUI(ctx, transactionOBj);
+  renderFinanceDetail(
+    transactionsArr,
+    financialDate,
+    financialDesc,
+    financialCategory,
+    financialAmt,
+    financialActions,
+  );
 };
 
 const checkLoggedIn = () => {
