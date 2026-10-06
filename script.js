@@ -36,9 +36,9 @@ const calculateTransactions = (transactionsArr) => {
 
 const generateChartUI = (ctx, transactionObj) => {
   const labels = ["Income vs Expenses"];
-
   const income = transactionObj.totalIncome;
   const expense = transactionObj.totalExpense;
+  const maximum = Math.max(income, expense);
 
   new Chart(ctx, {
     type: "bar",
@@ -49,13 +49,13 @@ const generateChartUI = (ctx, transactionObj) => {
       datasets: [
         {
           label: "Income",
-          data: income,
+          data: [income],
           borderRadius: 5,
           backgroundColor: "green",
         },
         {
           label: "Expense",
-          data: expense,
+          data: [expense],
           borderRadius: 5,
           backgroundColor: "#991b1b",
         },
@@ -68,6 +68,7 @@ const generateChartUI = (ctx, transactionObj) => {
       scales: {
         y: {
           beginAtZero: true,
+          suggestedMax: maximum * 1.2,
         },
       },
       plugins: {
@@ -93,35 +94,37 @@ const renderFinanceDetail = (
   financialActions,
 ) => {
   if (transactionArr.length === 0) return;
-  // date
-  const len = transactionArr.length;
-  const datePara = document.createElement("p");
-  datePara.textContent = transactionArr[len - 1].date;
-  financialDate.appendChild(datePara);
+  for (let i = 0; i < transactionArr.length; i++) {
+    // date
+    const len = transactionArr.length;
+    const datePara = document.createElement("p");
+    datePara.textContent = transactionArr[i].date;
+    financialDate.appendChild(datePara);
 
-  // description
-  const descPara = document.createElement("p");
-  descPara.textContent = transactionArr[len - 1].description;
-  financialDesc.appendChild(descPara);
+    // description
+    const descPara = document.createElement("p");
+    descPara.textContent = transactionArr[i].description;
+    financialDesc.appendChild(descPara);
 
-  // category
-  const categoryPara = document.createElement("p");
-  categoryPara.textContent = transactionArr[len - 1].category;
-  financialCategory.appendChild(categoryPara);
+    // category
+    const categoryPara = document.createElement("p");
+    categoryPara.textContent = transactionArr[i].category;
+    financialCategory.appendChild(categoryPara);
 
-  // amount
-  const amtPara = document.createElement("p");
-  amtPara.textContent = transactionArr[len - 1].amount;
-  financialAmt.appendChild(amtPara);
+    // amount
+    const amtPara = document.createElement("p");
+    amtPara.textContent = transactionArr[i].amount;
+    financialAmt.appendChild(amtPara);
 
-  // actions
-  const actionDiv = document.createElement("div");
-  act.classList.add(".action-btns");
-  actionDiv.innerHTML = `
+    // actions
+    const actionDiv = document.createElement("div");
+    actionDiv.classList.add(".action-btns");
+    actionDiv.innerHTML = `
       <button ><i class="fa-solid fa-pen"></i></button>
-      <button><i class="fa-solid fa-trash"></i></button>
+      <button class="delete"><i class="fa-solid fa-trash"></i></button>
   `;
-  financialActions.appendChild(actionDiv);
+    financialActions.appendChild(actionDiv);
+  }
 };
 
 transactionBox.addEventListener("click", (e) => {
@@ -137,6 +140,37 @@ const closeTransactionBox = () => {
   transactionBox.classList.remove("transaction-box-style");
 };
 
+const saveTransaction = (e, transactionArr) => {
+  e.preventDefault();
+  const user = JSON.parse(localStorage.getItem("user"));
+  const username = user.username;
+  console.log(username);
+  const transactionTempArr = JSON.parse(
+    localStorage.getItem(`transactions_${username}`),
+  );
+  const type = e.target[0].value;
+  const description = e.target[1].value;
+  const amount = e.target[2].value;
+  const date = e.target[3].value;
+  const category = e.target[4].value;
+
+  transactionTempArr.push({
+    id: Date.now(),
+    type,
+    description,
+    amount,
+    date,
+    category,
+  });
+
+  localStorage.setItem(
+    `transactions_${username}`,
+    JSON.stringify(transactionTempArr),
+  );
+  closeTransactionBox();
+  renderDashboard(transactionTempArr, user);
+};
+
 const renderTransactionUI = () => {
   transactionBox.innerHTML = `
         <div class="transaction-form">
@@ -144,7 +178,7 @@ const renderTransactionUI = () => {
             <h3>Add Transaction</h3>
             <p onclick="closeTransactionBox()">x</p>
           </div>
-          <form>
+          <form onsubmit = "saveTransaction(event)">
             <label for="type">Type</label>
             <select name="types" id="type">
               <option value="Income">Income</option>
@@ -184,7 +218,33 @@ const renderTransactionUI = () => {
   transactionBox.classList.add("transaction-box-style");
 };
 
+const logout = () => {
+  localStorage.removeItem("user");
+  document.title = "Login - Fintrack Pro";
+  checkLoggedIn();
+};
+
+const reset = () => {
+  const isReset = confirm(
+    "WARNING: This will delete all your transaction data permanently!",
+  );
+  if (isReset) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const username = user.username;
+    let transactionArr = JSON.parse(
+      localStorage.getItem(`transactions_${username}`),
+    );
+    transactionArr = [];
+    localStorage.setItem(
+      `transactions_${username}`,
+      JSON.stringify(transactionArr),
+    );
+    renderDashboard(transactionArr, user);
+  }
+};
+
 const renderDashboard = (transactionsArr, user) => {
+  document.title = "FinTrack Pro - Functional";
   const transactionOBj = calculateTransactions(transactionsArr);
   dashboard.innerHTML = "";
   dashboard.innerHTML += `
@@ -213,7 +273,7 @@ const renderDashboard = (transactionsArr, user) => {
         <header class="header">
           <div class="user-info">
             <h3>${user.username}</h3>
-            <button>
+            <button onclick="logout()">
               <i class="fa-solid fa-right-from-bracket"></i> Logout
             </button>
           </div>
@@ -278,7 +338,7 @@ const renderDashboard = (transactionsArr, user) => {
               <span class="slider"></span>
             </label>
           </div>
-          <button><i class="fa-solid fa-trash"></i> Reset All Data</button>
+          <button onclick = reset()><i class="fa-solid fa-trash"></i> Reset All Data</button>
         </div>
         <!-- all-transactions-container -->
         <div class="all-transactions">
@@ -367,13 +427,17 @@ const checkLoggedIn = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   if (user) {
     sessionStorage.setItem("isLoginCard", "null");
-    const transactionArr =
+    let transactionArr =
       JSON.parse(localStorage.getItem(`transactions_${user.username}`)) || [];
 
     registerCard.classList.add("hide");
     loginCard.classList.add("hide");
     auth.classList.add("hide");
     renderDashboard(transactionArr, user);
+  } else {
+    sessionStorage.setItem("isLoginCard", "true");
+    loginCard.classList.remove("hide");
+    auth.classList.remove("hide");
   }
 };
 
@@ -412,6 +476,8 @@ loginForm.addEventListener("submit", (e) => {
   } else {
     alert("Invalid username or password.");
   }
+  e.target[0].value = "";
+  e.target[1].value = "";
 });
 
 registerLink.addEventListener("click", () => {

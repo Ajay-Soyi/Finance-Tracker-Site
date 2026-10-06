@@ -547,6 +547,29 @@ canvas {
   height: 95% !important;
 }
 
+.finance-details .date,
+.description,
+.category,
+.amount,
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.finance-details button {
+  cursor: pointer;
+  background-color: transparent;
+  color: #1d40af;
+  border: none;
+  margin-right: 10px;
+  margin-left: 5px;
+}
+
+.finance-details .delete {
+  color: #981b1b;
+}
+
 .hide {
   display: none !important;
 }
@@ -556,7 +579,7 @@ main .transaction-box-style {
   position: absolute;
   background-color: rgba(0, 0, 0, 0.46);
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   top: 0%;
   left: 0%;
   display: flex;
