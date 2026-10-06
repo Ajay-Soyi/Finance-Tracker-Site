@@ -108,6 +108,7 @@ main .dashboard {
   min-height: 100vh;
   width: 100%;
   background-color: #f8f9fb;
+  /* background-color: #101827; */
   display: grid;
   grid-template-columns: 270px 330px 330px 166px 165px 330px;
   grid-template-rows: 80px 70px 160px 200px 150px;
@@ -134,6 +135,7 @@ main .dashboard {
   flex-direction: column;
   gap: 2.5rem;
   background-color: white;
+  /* background-color: #1f2937; */
   margin-right: 1rem;
 }
 
@@ -222,6 +224,7 @@ main .dashboard {
   justify-content: center;
   gap: 0.5rem;
   background-color: black;
+  /* background-color: #3c82f6; */
   color: white;
   font-weight: bold;
   cursor: pointer;
@@ -232,6 +235,7 @@ main .dashboard {
   border: 1px solid #e5e7eb;
   grid-area: header;
   background-color: white;
+  /* background-color: #1f2937; */
   margin-left: -2.1rem;
   padding: 1.3rem;
   padding-right: 2rem;
@@ -290,6 +294,7 @@ main .dashboard {
   grid-area: current-balance;
   border: 1px solid #e5e7eb;
   background-color: white;
+  /* background-color: #1f2937; */
   padding: 1.3rem;
   display: flex;
   flex-direction: column;
@@ -370,6 +375,7 @@ main .dashboard {
 /* cash-flow-analysis container styling */
 .dashboard .cash-flow-analysis {
   background-color: white;
+  /* background-color: #1f2937; */
   border: 1px solid #e5e7eb;
   padding: 1.3rem;
   grid-area: cash-flow-analysis;
@@ -377,11 +383,17 @@ main .dashboard {
   flex-direction: column;
 }
 
+.dashboard .cash-flow-analysis canvas {
+  /* background-color: #101827; */
+}
+
 /* preferences-container styling */
 .dashboard .preferences {
   grid-area: preferences;
   background-color: white;
   border: 1px solid #e5e7eb;
+  background-color: #fff;
+  /* background-color: #1f2937; */
   padding: 1.3rem;
   display: flex;
   flex-direction: column;
@@ -458,10 +470,10 @@ main .dashboard {
 
 /* all-transactions-container */
 .dashboard .all-transactions {
-  background-color: white;
   grid-area: all-transactions;
   border-radius: 0.8rem;
   background-color: white;
+  /* background-color: #1f2937; */
   border: 1px solid #e5e7eb;
   height: fit-content;
   padding: 2rem;
@@ -563,7 +575,7 @@ canvas {
   color: #1d40af;
   border: none;
   margin-right: 10px;
-  margin-left: 5px;
+  margin-left: 3px;
 }
 
 .finance-details .delete {

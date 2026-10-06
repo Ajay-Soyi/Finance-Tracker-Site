@@ -118,7 +118,7 @@ const renderFinanceDetail = (
 
     // actions
     const actionDiv = document.createElement("div");
-    actionDiv.classList.add(".action-btns");
+    actionDiv.classList.add("action-btns");
     actionDiv.innerHTML = `
       <button ><i class="fa-solid fa-pen"></i></button>
       <button class="delete"><i class="fa-solid fa-trash"></i></button>
@@ -243,6 +243,10 @@ const reset = () => {
   }
 };
 
+const renderSettings = () => {
+  
+};
+
 const renderDashboard = (transactionsArr, user) => {
   document.title = "FinTrack Pro - Functional";
   const transactionOBj = calculateTransactions(transactionsArr);
@@ -261,7 +265,7 @@ const renderDashboard = (transactionsArr, user) => {
             <button id="dashboard-btn">
               <i class="fa-solid fa-border-all"></i> Dashboard
             </button>
-            <button id="dashboard-setting-btn">
+            <button onclick = renderSettings() id="dashboard-setting-btn">
               <i class="fa-solid fa-gear"></i> Settings
             </button>
           </div>
