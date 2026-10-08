@@ -37,7 +37,7 @@ body {
   width: 24%;
   height: 40%;
   padding: 1rem;
-  background-color: white;
+  background-color: white !important;
   border-radius: 0.9rem;
   box-shadow: 0 0 5px 1px rgb(220, 213, 213);
   display: flex;
@@ -65,13 +65,17 @@ body {
 #auth form .username-input input {
   padding: 0.6rem;
   border-radius: 0.4rem;
+  background-color: white !important;
   border: 1px solid #cccccc;
+  color: black;
 }
 
 #auth .password-input input {
   padding: 0.6rem;
   border-radius: 0.5rem;
   border: 1px solid #cccccc;
+  background-color: white !important;
+  color: black;
 }
 
 #auth form > button {
@@ -383,10 +387,6 @@ main .dashboard {
   flex-direction: column;
 }
 
-.dashboard .cash-flow-analysis canvas {
-  /* background-color: #101827; */
-}
-
 /* preferences-container styling */
 .dashboard .preferences {
   grid-area: preferences;
@@ -503,7 +503,7 @@ main .dashboard {
 
 .all-transactions .search .search-input {
   background-color: #f8f9fb;
-  padding: 0.5rem;
+  padding: 0.2rem 0.5rem;
   width: 30%;
   border-radius: 0.5rem;
   display: flex;
@@ -674,4 +674,255 @@ input {
   border-radius: 0.5rem;
   cursor: pointer;
   margin-top: 1rem;
+}
+
+/* Settings */
+.settings {
+  width: 800px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.settings .setting-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.settings .setting-heading h2 {
+  font-size: 2rem;
+}
+
+.settings .setting-heading p {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.settings .profile-details {
+  height: 55%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: white;
+  padding: 1.3rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.settings .profile-details .details-user {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.settings .profile-details .details-user .full-name,
+.currency {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 50%;
+}
+
+.settings .profile-details input,
+select {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  background-color: #f8f9fb;
+}
+
+.settings .profile-details > button {
+  margin-top: auto;
+  width: fit-content;
+  padding: 0.8rem 1.2rem;
+  cursor: pointer;
+  background-color: black;
+  color: white;
+  border-radius: 0.5rem;
+  border: none;
+}
+
+.dashboard .side-navbar .menu .dashboard-color-inactive {
+  color: #9ba0aa;
+  background-color: transparent;
+}
+
+.dashboard .side-navbar .menu .dashboard-color-inactive:hover {
+  background-color: #dbeafe;
+  color: #1f40af;
+}
+
+.side-navbar .menu button:nth-child(2) {
+  color: #9ba0aa;
+  background-color: transparent;
+}
+
+.side-navbar .menu button:nth-child(2):hover {
+  background-color: #dbeafe;
+  color: #1f40af;
+}
+
+.dashboard .side-navbar .menu .dashboard-setting-color-active {
+  background-color: #dbe9fe;
+  color: #1d40af;
+}
+
+/* dark theme styling */
+
+#dark-theme-dashboard {
+  background-color: #101827;
+  color: white;
+}
+
+#dark-theme-dashboard .side-navbar {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+}
+
+#dark-theme-dashboard .side-navbar .menu button:nth-child(1) {
+  background-color: #374151;
+  color: #60a5fa;
+}
+
+#dark-theme-dashboard .side-navbar .menu .dashboard-color-inactive {
+  color: #9ca3af !important;
+  background-color: transparent !important;
+}
+
+#dark-theme-dashboard .side-navbar .menu .dashboard-color-inactive:hover {
+  background-color: #374151 !important;
+  color: #60a5fa !important;
+}
+
+#dark-theme-dashboard .side-navbar .menu .dashboard-setting-color-active {
+  background-color: #374151;
+  color: #60a5fa;
+}
+
+#dark-theme-dashboard .side-navbar .menu button:nth-child(2):hover {
+  background-color: #374151;
+  color: #60a5fa;
+}
+
+#dark-theme-dashboard .side-navbar > button {
+  background-color: #3c82f6;
+  color: white;
+}
+
+#dark-theme-dashboard .header {
+  border-color: #374151;
+  background-color: #1f2937;
+}
+
+#dark-theme-dashboard .current-balance {
+  background-color: #1f2937;
+  border-color: #374151;
+  color: #9ba2ae;
+}
+#dark-theme-dashboard .total-expense {
+  background-color: #1f2937;
+  border-color: #374151;
+  color: #9ba2ae;
+}
+
+#dark-theme-dashboard .total-income {
+  background-color: #1f2937;
+  border-color: #374151;
+  color: #9ba2ae;
+}
+#dark-theme-dashboard .total-transaction {
+  background-color: #1f2937;
+  border-color: #374151;
+  color: #9ba2ae;
+}
+
+#dark-theme-dashboard .total-transaction .icon {
+  background-color: #374151;
+}
+
+#dark-theme-dashboard .current-balance .icon {
+  background-color: #374151;
+}
+
+#dark-theme-dashboard .total-transaction .icon i {
+  color: #60a5fa;
+}
+
+#dark-theme-dashboard .current-balance .icon i {
+  color: #60a5fa;
+}
+
+#dark-theme-dashboard .cash-flow-analysis {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+#dark-theme-dashboard .cash-flow-analysis canvas {
+  background-color: #101827;
+  color: #666666;
+}
+
+#dark-theme-dashboard .preferences {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+#dark-theme-dashboard .all-transactions {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+#dark-theme-dashboard .all-transactions .search .search-input {
+  background-color: #101827;
+}
+
+#dark-theme-dashboard .all-transactions .search .search-input input {
+  background-color: #101827;
+}
+
+#dark-theme-dashboard .all-transactions .search .select-type select {
+  background-color: #101827;
+  color: white;
+  border-color: #374151;
+}
+
+#dark-theme-transaction-box .transaction-form {
+  background-color: #1f2937;
+  color: white;
+}
+
+#dark-theme-transaction-box .transaction-form form select,
+input {
+  background-color: #101827;
+  color: white;
+  border-color: #374151;
+}
+
+#dark-theme-transaction-box .transaction-form form > button {
+  border-color: transparent;
+  background-color: #101827;
+  color: white;
+}
+
+#dark-theme-dashboard .settings .profile-details {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+#dark-theme-dashboard .settings .profile-details input {
+  background-color: #101827;
+  border-color: #374151;
+  color: white;
+}
+
+#dark-theme-dashboard .settings .profile-details select {
+  background-color: #101827;
+  border-color: #374151;
+  color: white;
+}
+
+#dark-theme-dashboard .settings .profile-details > button {
+  background-color: #101827;
 }

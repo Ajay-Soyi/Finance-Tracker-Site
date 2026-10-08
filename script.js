@@ -11,6 +11,17 @@ const loginLink = document.querySelector("#login-link");
 const dashboard = document.querySelector(".dashboard");
 const auth = document.getElementById("auth");
 const transactionBox = document.querySelector(".transaction-box");
+let financeChart;
+
+const checkTheme = (e) => {
+  const theme = localStorage.getItem("theme");
+  if (theme === "dark") {
+    localStorage.setItem("theme", "dark");
+    dashboard.id = "dark-theme-dashboard";
+    transactionBox.id = "dark-theme-transaction-box";
+  }
+};
+checkTheme();
 
 const calculateTransactions = (transactionsArr) => {
   let currentBalance = 0;
@@ -40,7 +51,11 @@ const generateChartUI = (ctx, transactionObj) => {
   const expense = transactionObj.totalExpense;
   const maximum = Math.max(income, expense);
 
-  new Chart(ctx, {
+  if (financeChart) {
+    financeChart.destroy();
+  }
+
+  financeChart = new Chart(ctx, {
     type: "bar",
 
     data: {
@@ -71,6 +86,7 @@ const generateChartUI = (ctx, transactionObj) => {
           suggestedMax: maximum * 1.2,
         },
       },
+
       plugins: {
         legend: {
           position: "top",
@@ -243,8 +259,190 @@ const reset = () => {
   }
 };
 
-const renderSettings = () => {
-  
+const handleChange = (e) => {
+  const value = e.target.value.toLowerCase();
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const username = user.username;
+
+  const transactionArr =
+    JSON.parse(localStorage.getItem(`transactions_${username}`)) || [];
+
+  const tempArr = transactionArr.filter((elem) => {
+    return (
+      elem.description.toLowerCase().startsWith(value) ||
+      elem.category.toLowerCase().startsWith(value)
+    );
+  });
+
+  // Calculate values for filtered transactions
+  const transactionObj = calculateTransactions(tempArr);
+
+  // updating chart ui
+  const ctx = document.getElementById("cash-flow-chart");
+  generateChartUI(ctx, transactionObj);
+
+  // Update cards
+  document.querySelector(".current-balance h2").textContent =
+    `$${transactionObj.currentBalance}.00`;
+
+  document.querySelector(".total-income h2").textContent =
+    `$${transactionObj.totalIncome}.00`;
+
+  document.querySelector(".total-expense h2").textContent =
+    `$${transactionObj.totalExpense}.00`;
+
+  document.querySelector(".total-transaction h2").textContent =
+    transactionObj.totalTransactions;
+
+  // Update transaction rows
+  const financialDate = document.querySelector(".finance-details .date");
+  const financialDesc = document.querySelector(".finance-details .description");
+  const financialCategory = document.querySelector(
+    ".finance-details .category",
+  );
+  const financialAmt = document.querySelector(".finance-details .amount");
+  const financialActions = document.querySelector(".finance-details .actions");
+
+  financialDate.querySelectorAll("p").forEach((el) => el.remove());
+  financialDesc.querySelectorAll("p").forEach((el) => el.remove());
+  financialCategory.querySelectorAll("p").forEach((el) => el.remove());
+  financialAmt.querySelectorAll("p").forEach((el) => el.remove());
+  financialActions
+    .querySelectorAll(".action-btns")
+    .forEach((el) => el.remove());
+
+  renderFinanceDetail(
+    tempArr,
+    financialDate,
+    financialDesc,
+    financialCategory,
+    financialAmt,
+    financialActions,
+  );
+};
+
+const handleSettingSubmit = (e) => {
+  e.preventDefault();
+  const user = JSON.parse(localStorage.getItem("user"));
+  const username = user.username;
+  const transactionArr =
+    JSON.parse(localStorage.getItem(`transactions_${username}`)) || [];
+  const updatedName = e.target[0].value;
+  const updatedCurrency = e.target[1].value;
+  if (updatedName.trim() === "" || updatedCurrency.trim() === "") {
+    return;
+  } else {
+    const registeredUsersTemp = registeredUsers.map((elem) => {
+      if (elem.username == username) {
+        elem.username = updatedName;
+        elem.currency = updatedCurrency;
+      }
+      return elem;
+    });
+    localStorage.setItem(
+      "registeredUsers",
+      JSON.stringify(registeredUsersTemp),
+    );
+    user.username = updatedName;
+    user.currency = updatedCurrency;
+    localStorage.removeItem(`transactions_${username}`);
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem(
+      `transactions_${user.username}`,
+      JSON.stringify(transactionArr),
+    );
+    const name = document.querySelector(".user-info h3");
+    name.textContent = user.username;
+  }
+};
+
+const handleDashboardChange = (e) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const username = user.username;
+  const transactionTempArr = JSON.parse(
+    localStorage.getItem(`transactions_${username}`),
+  );
+  renderDashboard(transactionTempArr, user);
+};
+
+const handleTypeSelectChange = (e) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const username = user.username;
+  let transactionTempArr = JSON.parse(
+    localStorage.getItem(`transactions_${username}`),
+  );
+  if (e.target.value === "All types") {
+    e.target.value = "All types";
+  } else if (e.target.value === "Income only") {
+    transactionTempArr = transactionTempArr.filter(
+      (elem) => elem.type === "Income",
+    );
+  } else {
+    transactionTempArr = transactionTempArr.filter(
+      (elem) => elem.type === "Expense",
+    );
+  }
+
+  // Calculate values for filtered transactions
+  const transactionObj = calculateTransactions(transactionTempArr);
+
+  // updating chart ui
+  const ctx = document.getElementById("cash-flow-chart");
+  generateChartUI(ctx, transactionObj);
+
+  // Update cards
+  document.querySelector(".current-balance h2").textContent =
+    `$${transactionObj.currentBalance}.00`;
+
+  document.querySelector(".total-income h2").textContent =
+    `$${transactionObj.totalIncome}.00`;
+
+  document.querySelector(".total-expense h2").textContent =
+    `$${transactionObj.totalExpense}.00`;
+
+  document.querySelector(".total-transaction h2").textContent =
+    transactionObj.totalTransactions;
+
+  // Update transaction rows
+  const financialDate = document.querySelector(".finance-details .date");
+  const financialDesc = document.querySelector(".finance-details .description");
+  const financialCategory = document.querySelector(
+    ".finance-details .category",
+  );
+  const financialAmt = document.querySelector(".finance-details .amount");
+  const financialActions = document.querySelector(".finance-details .actions");
+
+  financialDate.querySelectorAll("p").forEach((el) => el.remove());
+  financialDesc.querySelectorAll("p").forEach((el) => el.remove());
+  financialCategory.querySelectorAll("p").forEach((el) => el.remove());
+  financialAmt.querySelectorAll("p").forEach((el) => el.remove());
+  financialActions
+    .querySelectorAll(".action-btns")
+    .forEach((el) => el.remove());
+
+  renderFinanceDetail(
+    transactionTempArr,
+    financialDate,
+    financialDesc,
+    financialCategory,
+    financialAmt,
+    financialActions,
+  );
+};
+
+const changeTheme = (e) => {
+  if (e.target.checked) {
+    localStorage.setItem("theme", "dark");
+    dashboard.id = "dark-theme-dashboard";
+    transactionBox.id = "dark-theme-transaction-box";
+    e.target.checked = true;
+  } else {
+    localStorage.setItem("theme", "light");
+    dashboard.removeAttribute("id");
+    transactionBox.removeAttribute("id");
+    e.target.checked = false;
+  }
 };
 
 const renderDashboard = (transactionsArr, user) => {
@@ -252,8 +450,8 @@ const renderDashboard = (transactionsArr, user) => {
   const transactionOBj = calculateTransactions(transactionsArr);
   dashboard.innerHTML = "";
   dashboard.innerHTML += `
-            <!-- side navbar -->
-        <nav class="side-navbar">
+        <!-- side navbar -->
+        <nav class=" side-navbar">
           <div class="logo">
             <i class="fa-solid fa-layer-group"></i>
             <div class="logo-details">
@@ -262,10 +460,10 @@ const renderDashboard = (transactionsArr, user) => {
             </div>
           </div>
           <div class="menu">
-            <button id="dashboard-btn">
+            <button onclick =" handleDashboardChange(event)" id="dashboard-btn">
               <i class="fa-solid fa-border-all"></i> Dashboard
             </button>
-            <button onclick = renderSettings() id="dashboard-setting-btn">
+            <button id="dashboard-setting-btn">
               <i class="fa-solid fa-gear"></i> Settings
             </button>
           </div>
@@ -283,12 +481,12 @@ const renderDashboard = (transactionsArr, user) => {
           </div>
         </header>
         <!-- overview-heading  -->
-        <div class="overview">
+        <div class="setting-close overview">
           <h1>Financial Overview</h1>
           <p>Real-time tracking application</p>
         </div>
         <!-- current-balance-container -->
-        <div class="current-balance">
+        <div class="setting-close current-balance">
           <div class="icon">
             <i class="fa-solid fa-building-columns"></i>
           </div>
@@ -298,7 +496,7 @@ const renderDashboard = (transactionsArr, user) => {
           </div>
         </div>
         <!-- total-income-container -->
-        <div class="total-income">
+        <div class="setting-close total-income">
           <div class="icon">
             <i class="fa-solid fa-arrow-trend-up"></i>
           </div>
@@ -308,7 +506,7 @@ const renderDashboard = (transactionsArr, user) => {
           </div>
         </div>
         <!-- total-expense-container -->
-        <div class="total-expense">
+        <div class="setting-close total-expense">
           <div class="icon">
             <i class="fa-solid fa-arrow-trend-down"></i>
           </div>
@@ -318,7 +516,7 @@ const renderDashboard = (transactionsArr, user) => {
           </div>
         </div>
         <!-- total-transaction-container -->
-        <div class="total-transaction">
+        <div class="setting-close total-transaction">
           <div class="icon">
             <i class="fa-solid fa-piggy-bank"></i>
           </div>
@@ -328,39 +526,39 @@ const renderDashboard = (transactionsArr, user) => {
           </div>
         </div>
         <!-- cash-flow-analysis-container -->
-        <div class="cash-flow-analysis">
+        <div class="setting-close cash-flow-analysis">
           <h2>Cash Flow Analysis</h2>
           <canvas id="cash-flow-chart"></canvas>
         </div>
         <!-- preferences-container -->
-        <div class="preferences">
+        <div class="setting-close preferences">
           <h2>Preferences</h2>
           <div class="preferences-button">
             <h3>Dark Mode</h3>
             <label class="theme-toggle">
-              <input type="checkbox" id="theme-toggle" />
+              <input type="checkbox" id="theme-toggle" onchange="changeTheme(event)" />
               <span class="slider"></span>
             </label>
           </div>
           <button onclick = reset()><i class="fa-solid fa-trash"></i> Reset All Data</button>
         </div>
         <!-- all-transactions-container -->
-        <div class="all-transactions">
+        <div class="setting-close all-transactions">
           <h2>All Transactions</h2>
           <div class="search">
             <div class="search-input">
               <i class="fa-solid fa-magnifying-glass"></i>
-              <input type="search" placeholder="Search transactions..." />
+              <input oninput="handleChange(event)" type="search" placeholder="Search transactions..." />
             </div>
             <div class="select-type">
-              <select name="types" id="type">
+              <select onchange="handleTypeSelectChange(event)" name="types" id="type">
                 <option value="All types">All types</option>
                 <option value="Income only">Income only</option>
                 <option value="Expense only">Expense Only</option>
               </select>
             </div>
           </div>
-          <div class="finance-details">
+          <div class="setting-close finance-details">
             <div class="date">
               <h4>Date</h4>
             </div>
@@ -384,12 +582,12 @@ const renderDashboard = (transactionsArr, user) => {
             <h2>Settings</h2>
             <p>Manage your account profile and app formatting.</p>
           </div>
-          <div class="profile-details">
+          <form onsubmit="handleSettingSubmit(event)" class="profile-details">
             <h2>Profile Details</h2>
             <div class="details-user">
               <div class="full-name">
                 <label for="full-name">Full Name</label>
-                <input type="text" value="Name" id="full-name" />
+                <input type="text" value=${user.username} id="full-name" />
               </div>
               <div class="currency">
                 <label for="primary-currency">Primary Currency</label>
@@ -402,10 +600,19 @@ const renderDashboard = (transactionsArr, user) => {
                 </select>
               </div>
             </div>
-            <button>Save Changes</button>
-          </div>
+            <button type="submit">Save Changes</button>
+          </form>
         </div>
   `;
+
+  // theme set
+  const themeToggle = document.getElementById("theme-toggle");
+  const theme = localStorage.getItem("theme");
+  if (theme === "dark") {
+    themeToggle.checked = true;
+  } else {
+    themeToggle.checked = false;
+  }
 
   // additional renders
   const ctx = document.getElementById("cash-flow-chart");
@@ -425,6 +632,27 @@ const renderDashboard = (transactionsArr, user) => {
     financialAmt,
     financialActions,
   );
+  // for settings
+  const settingsBtn = document.querySelector("#dashboard-setting-btn");
+  const dashboardBtn = document.getElementById("dashboard-btn");
+  const settingContainer = document.querySelector("#settings-container");
+  const forSettingsHideContainers = document.querySelectorAll(".setting-close");
+  settingsBtn.addEventListener("click", (e) => {
+    settingContainer.classList.remove("hide");
+    settingsBtn.classList.add("dashboard-setting-color-active");
+    dashboardBtn.classList.add("dashboard-color-inactive");
+    forSettingsHideContainers.forEach((elem) => {
+      elem.style.display = "none";
+    });
+  });
+  dashboardBtn.addEventListener("click", (e) => {
+    settingContainer.classList.add("hide");
+    settingsBtn.classList.remove("dashboard-setting-color-active");
+    dashboardBtn.classList.remove("dashboard-color-inactive");
+    forSettingsHideContainers.forEach((elem) => {
+      elem.style.display = "flex";
+    });
+  });
 };
 
 const checkLoggedIn = () => {
