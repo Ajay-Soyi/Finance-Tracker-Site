@@ -101,6 +101,41 @@ const generateChartUI = (ctx, transactionObj) => {
   });
 };
 
+let isEditTransactionIdx = null;
+const handleEdit = (e, i) => {
+  isEditTransactionIdx = i;
+  renderTransactionUI();
+  const user = JSON.parse(localStorage.getItem("user"));
+  const username = user.username;
+  const transactionTempArr = JSON.parse(
+    localStorage.getItem(`transactions_${username}`),
+  );
+  const type = document.getElementById("type");
+  const description = document.getElementById("description");
+  const amount = document.getElementById("amount");
+  const date = document.getElementById("date");
+  const category = document.getElementById("category");
+
+  type.value = transactionTempArr[i].type;
+  description.value = transactionTempArr[i].description;
+  amount.value = transactionTempArr[i].amount;
+  date.value = transactionTempArr[i].date;
+  category.value = transactionTempArr[i].category;
+};
+
+const handleDelete = (e, i) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const username = user.username;
+  const transactionTempArr = JSON.parse(
+    localStorage.getItem(`transactions_${username}`),
+  );
+  transactionTempArr.splice(i, 1);
+  localStorage.setItem(
+    `transactions_${username}`,
+    JSON.stringify(transactionTempArr),
+  );
+  renderDashboard(transactionTempArr, user);
+};
 const renderFinanceDetail = (
   transactionArr,
   financialDate,
@@ -136,8 +171,8 @@ const renderFinanceDetail = (
     const actionDiv = document.createElement("div");
     actionDiv.classList.add("action-btns");
     actionDiv.innerHTML = `
-      <button ><i class="fa-solid fa-pen"></i></button>
-      <button class="delete"><i class="fa-solid fa-trash"></i></button>
+      <button onclick="handleEdit(event,${i})" id="all-transaction-edit"><i class="fa-solid fa-pen"></i></button>
+      <button onclick="handleDelete(event,${i})"  class="delete"><i class="fa-solid fa-trash"></i></button>
   `;
     financialActions.appendChild(actionDiv);
   }
@@ -170,14 +205,26 @@ const saveTransaction = (e, transactionArr) => {
   const date = e.target[3].value;
   const category = e.target[4].value;
 
-  transactionTempArr.push({
-    id: Date.now(),
-    type,
-    description,
-    amount,
-    date,
-    category,
-  });
+  if (isEditTransactionIdx != null) {
+    transactionTempArr[isEditTransactionIdx] = {
+      ...transactionTempArr[isEditTransactionIdx],
+      type,
+      description,
+      amount,
+      date,
+      category,
+    };
+    isEditTransactionIdx = null;
+  } else {
+    transactionTempArr.push({
+      id: Date.now(),
+      type,
+      description,
+      amount,
+      date,
+      category,
+    });
+  }
 
   localStorage.setItem(
     `transactions_${username}`,
@@ -201,11 +248,11 @@ const renderTransactionUI = () => {
               <option value="Expense" selected>Expense</option>
             </select>
             <label for="description">Description</label>
-            <input type="text" placeholder="e.g. Amazon, Salary, Coffee" />
+            <input id="description"  type="text" placeholder="e.g. Amazon, Salary, Coffee" />
             <div class="amt-date">
               <div class="amt">
                 <label for="amount">Amount</label>
-                <input type="number" />
+                <input id="amount"  type="number" />
               </div>
               <div class="date">
                 <label for="date">Date</label>

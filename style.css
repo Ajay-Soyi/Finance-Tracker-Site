@@ -514,6 +514,7 @@ main .dashboard {
 .all-transactions .search .search-input input {
   border: none;
   background-color: #f8f9fb;
+  color: black;
 }
 
 .all-transactions .search .search-input input:focus {
@@ -638,6 +639,11 @@ input {
   border-radius: 0.5rem;
 }
 
+.transaction-box .transaction-form form input {
+  background-color: #f8f9fb;
+  border: 1px solid #e5e7eb;
+}
+
 .transaction-box .transaction-form form .amt-date {
   display: flex;
   /* justify-content: space-evenly; */
@@ -723,6 +729,10 @@ input {
   flex-direction: column;
   gap: 0.5rem;
   width: 50%;
+}
+
+.settings .profile-details input {
+  color: black;
 }
 
 .settings .profile-details input,
