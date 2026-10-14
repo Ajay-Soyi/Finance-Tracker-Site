@@ -1,103 +1,94 @@
-# FinTrack Pro — Personal Finance Tracker
+# FinTrack Pro
 
-FinTrack Pro is a browser-based personal finance tracker built with **HTML, CSS, and vanilla JavaScript**. It helps users track income and expenses, monitor their financial activity, and manage transactions through a simple dashboard.
+**A browser-based personal finance tracker built with HTML, CSS, and vanilla JavaScript.**
+
+Track income and expenses, review your cash flow, and manage transactions through a simple dashboard.
+
+**[Live Demo](https://financetrackersite.vercel.app/)** · **[Source Code](https://github.com/Ajay-Soyi/Finance-Tracker-Site)**
+
+---
+
+## Overview
+
+FinTrack Pro is a front-end project designed to help users record and review personal income and expenses. It was built to practise core web development concepts such as DOM manipulation, form handling, browser storage, and interactive user interfaces.
 
 ## Features
 
-- **User Registration and Login** — Create an account and log in using browser storage.
-- **Dashboard Overview** — View current balance, total income, total expenses, and transaction count.
-- **Transaction Management** — Add, edit, and delete income or expense transactions.
-- **Transaction Details** — Record the date, description, category, type, and amount.
-- **Search and Filtering** — Find transactions using search text or transaction type.
-- **Income vs. Expense Chart** — Visualize income and expenses using Chart.js.
-- **Dark Mode** — Switch the interface theme.
-- **Profile Settings** — Update the display name and preferred currency.
-- **Reset Data** — Clear stored financial data.
-- **Persistent Storage** — Save data in the browser using `localStorage`.
+- **Dashboard:** View your balance, total income, expenses, and transaction count.
+- **Transaction management:** Add, edit, and delete transactions.
+- **Income and expense tracking:** Organise transactions by type.
+- **Browser storage:** Retain supported application data between visits.
+- **Dark mode:** Switch the interface theme.
+- **Profile settings:** Manage the profile information supported by the application.
+- **Charts:** Visualise financial information using Chart.js.
 
 ## Tech Stack
 
-- **HTML5** — Page structure and content.
-- **CSS3** — Styling, layout, and themes.
-- **JavaScript (ES6+)** — Application logic and DOM manipulation.
-- **Chart.js** — Income and expense visualization.
-- **Font Awesome** — Interface icons.
-- **Browser APIs** — `localStorage` and `sessionStorage`.
+- HTML5
+- CSS3
+- Vanilla JavaScript
+- Browser Storage
+- Chart.js
+- Vercel
 
 ## Getting Started
 
-No build tools or package installation are required.
-
-### 1. Clone the Repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/Ajay-Soyi/Finance-Tracker-Site.git
+cd Finance-Tracker-Site
 ```
 
-### 2. Open the Project
+### 2. Run the project
 
-Navigate to the project folder:
+Open `index.html` in your browser.
 
-```bash
-cd YOUR-REPOSITORY
-```
-
-### 3. Run the Application
-
-Open `index.html` in your web browser.
-
-Alternatively, open the project in Visual Studio Code and use the **Live Server** extension to run it locally.
+Alternatively, open the project folder in VS Code and use the Live Server extension.
 
 ## Project Structure
 
 ```text
-FinTrack-Pro/
-├── index.html   # Application entry point and authentication screens
-├── style.css    # Styling, layout, and theme definitions
-├── script.js    # Application logic and DOM manipulation
-└── README.md    # Project documentation
+Finance-Tracker-Site/
+├── index.html
+├── style.css
+├── script.js
+└── README.md
 ```
 
-## How to Use
+## What I Learned
 
-1. Open the application in your browser.
-2. Create an account using the registration screen.
-3. Log in with your registered credentials.
-4. Add income or expense transactions with the relevant details.
-5. View your balance, total income, total expenses, and transaction count on the dashboard.
-6. Search, filter, edit, or delete transactions as needed.
-7. Open **Settings** to update your display name, preferred currency, or theme.
+- DOM manipulation and event handling
+- Form validation and user input handling
+- Managing arrays and transaction data
+- Using browser storage
+- Updating UI elements dynamically
+- Building interactive interfaces with HTML, CSS, and JavaScript
+- Visualising data with Chart.js
+- Deploying a static web application
 
-## Data Storage and Limitations
+## Limitations
 
-- Account and transaction information is stored locally in the browser using `localStorage`.
-- Login-related session information is managed using `sessionStorage`.
-- Data does not automatically synchronize across different browsers or devices.
-- Clearing the browser's site data may remove saved information.
-- This is a **front-end learning project**, not a production-ready banking application.
-- Authentication is handled on the client side without a secure backend or database. Browser-stored credentials are not secure enough for real-world authentication.
-- Avoid entering real or sensitive financial information.
-- Chart.js and Font Awesome are loaded from external CDNs and require an internet connection to load.
+- Data is stored in the browser and may be lost if browser storage is cleared.
+- Data is not automatically synchronised across devices.
+- Client-side authentication, if enabled, is for demonstration purposes and is not production-grade security.
+- This project is intended for learning and demonstration, not for storing sensitive financial information.
 
 ## Future Improvements
 
-- Integrate a secure backend and database.
-- Implement secure authentication and password hashing.
-- Add monthly financial reports and budgeting tools.
-- Provide spending insights and expense analytics.
-- Enable transaction export to CSV.
-- Improve accessibility and responsive design.
+- Add transaction search, filtering, and sorting.
+- Add transaction export and import.
+- Improve validation and error handling.
+- Add automated tests.
+- Introduce a secure backend and database if synchronisation is required.
 
-## Contributing
+## Author
 
-Suggestions and improvements are welcome!
+**Ajay Soyi**
 
-1. Fork the repository.
-2. Create a new branch for your changes.
-3. Commit your changes.
-4. Push the branch to your fork.
-5. Open a pull request.
+- GitHub: [@Ajay-Soyi](https://github.com/Ajay-Soyi)
+- Repository: [Finance-Tracker-Site](https://github.com/Ajay-Soyi/Finance-Tracker-Site)
 
-## License
+---
 
-No license has been specified yet. Add a `LICENSE` file to define how others may use, modify, and distribute this project.
+If you have feedback or suggestions, feel free to open an issue.
